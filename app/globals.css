@@ -1,26 +1,67 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Same palette as the game (CarRaceGame/src/theme.ts). */
+@theme {
+  --color-bg: #0a0c10;
+  --color-bg-alt: #11141a;
+  --color-surface: #151922;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-ink: #f5f7fa;
+  --color-dim: #8b93a7;
+  --color-primary: #ff5a1f;
+  --color-primary-hover: #ff7341;
+  --color-accent: #3b9eff;
+  --color-gold: #ffc233;
+  --color-success: #2ed47a;
+  --color-secondary: #8b7cff;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+::selection {
+  background: rgb(255 90 31 / 0.35);
+}
+
+/* Faint grid behind the hero. */
+.bg-grid {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 30%, transparent 75%);
+}
+
+/* Scrolling lane dashes inside the phone mockup. */
+@keyframes lane {
+  from { transform: translateY(-64px); }
+  to { transform: translateY(0); }
+}
+.lane-dashes {
+  background: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.5) 0 28px, transparent 28px 64px);
+  animation: lane 0.5s linear infinite;
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.floaty {
+  animation: floaty 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .lane-dashes, .floaty { animation: none; }
 }
